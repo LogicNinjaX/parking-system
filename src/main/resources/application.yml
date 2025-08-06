@@ -1,0 +1,18 @@
+spring:
+    application:
+         name: parking
+
+
+    datasource:
+      url: ${DB_URL}
+      username: ${DB_UNAME}
+      password: ${DB_PASS}
+
+    jpa:
+      hibernate:
+        ddl-auto: update
+      properties:
+        hibernate:
+          format_sql: true
+          highlight_sql: true
+      show-sql: true
