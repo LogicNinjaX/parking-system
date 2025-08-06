@@ -23,6 +23,8 @@ public class ParkingData {
 
     private Boolean isDisabled = false;
 
+    private Boolean isBooked;
+
     private String locationUrl;
 
     @Column(nullable = false)
@@ -69,6 +71,14 @@ public class ParkingData {
 
     public void setDisabled(Boolean disabled) {
         isDisabled = disabled;
+    }
+
+    public Boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(Boolean booked) {
+        isBooked = booked;
     }
 
     public String getLocationUrl() {
