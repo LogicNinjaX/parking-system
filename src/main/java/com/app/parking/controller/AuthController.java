@@ -23,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ApiResponse<RegisterResponse>> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<ApiResponse<RegisterResponse>> register(@Valid @RequestBody RegisterRequest request){
         var response = userService.registerUser(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
