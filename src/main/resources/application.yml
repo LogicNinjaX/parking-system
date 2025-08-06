@@ -16,3 +16,11 @@ spring:
           format_sql: true
           highlight_sql: true
       show-sql: true
+
+    messages:
+      basename: messages
+
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXP} # in milliseconds
