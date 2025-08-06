@@ -17,11 +17,6 @@ import java.util.UUID;
                 @UniqueConstraint(
                         name = "uk_user_table_username",
                         columnNames = {"username"}
-                ),
-
-                @UniqueConstraint(
-                        name = "uk_user_table_password",
-                        columnNames = {"password"}
                 )
         }
 )
