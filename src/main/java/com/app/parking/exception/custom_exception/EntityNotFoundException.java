@@ -5,4 +5,8 @@ public class EntityNotFoundException extends ServiceException {
     public EntityNotFoundException(String entityName, Object identifier) {
         super(entityName+" with id: "+identifier+" not found");
     }
+
+    public EntityNotFoundException(String message) {
+        super(message);
+    }
 }
