@@ -52,6 +52,16 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public User() {
+    }
+
+    public User(UUID userId, String username, String password, UserRole role) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
     public UUID getUserId() {
         return userId;
     }

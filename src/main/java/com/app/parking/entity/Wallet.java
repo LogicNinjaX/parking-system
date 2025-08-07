@@ -17,7 +17,7 @@ public class Wallet {
 
     private Double balance;
 
-    @OneToOne(mappedBy = "wallet")
+    @OneToOne(mappedBy = "wallet", fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
 
