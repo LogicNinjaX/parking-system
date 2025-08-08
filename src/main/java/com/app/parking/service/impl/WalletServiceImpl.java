@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -37,7 +36,7 @@ public class WalletServiceImpl implements WalletService {
         Wallet wallet = userRepository.findWalletByUserId(userId)
                 .orElseThrow(() -> new WalletNotFoundException("Wallet not found for user id: "+userId));
 
-        Double updatedAmount = Optional.ofNullable(wallet.getBalance()).orElse(0.0) + amount;
+        double updatedAmount = wallet.getBalance() + amount;
         wallet.setBalance(updatedAmount);
         wallet =  walletRepository.save(wallet);
 
