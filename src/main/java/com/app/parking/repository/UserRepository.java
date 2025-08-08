@@ -17,4 +17,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("SELECT u.wallet FROM User u WHERE u.userId = :userId")
     Optional<Wallet> findWalletByUserId(UUID userId) throws WalletNotFoundException;
+
+    @Query("SELECT new com.app.parking.entity.User(u.userId, u.username, u.password, u.role) FROM User u WHERE u.userId = :userId")
+    Optional<User> findByUserId(UUID userId) throws UserNotFoundException;
 }
