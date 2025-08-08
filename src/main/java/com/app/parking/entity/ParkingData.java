@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,18 +18,18 @@ public class ParkingData {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID parkingId;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", referencedColumnName = "userId", nullable = false)
     private User owner;
 
     private Boolean isDisabled = false;
 
-    private Boolean isBooked;
+    private Boolean isBooked = false;
 
     private String locationUrl;
 
     @Column(nullable = false)
-    private Double price;  // in hours
+    private Long price;  // in hours
 
     @Column(nullable = false)
     private String state;
@@ -37,10 +38,12 @@ public class ParkingData {
     private String city;
 
     @Column(nullable = false)
-    private Integer pincode;
+    private int pincode;
 
     @Column(nullable = false)
     private String address_line;
+
+    private Set<String> vehicleType;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -89,11 +92,11 @@ public class ParkingData {
         this.locationUrl = locationUrl;
     }
 
-    public Double getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
@@ -127,6 +130,14 @@ public class ParkingData {
 
     public void setAddress_line(String address_line) {
         this.address_line = address_line;
+    }
+
+    public Set<String> getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(Set<String> vehicleType) {
+        this.vehicleType = vehicleType;
     }
 
     public LocalDateTime getCreatedAt() {
