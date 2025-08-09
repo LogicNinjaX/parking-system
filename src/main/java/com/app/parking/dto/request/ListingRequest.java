@@ -1,22 +1,34 @@
 package com.app.parking.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 import java.util.Set;
 
 public class ListingRequest {
 
+    @NotBlank(message = "{parking.list.state.not-blank}")
     private String state;
 
+    @NotBlank(message = "{parking.list.city.not-blank}")
     private String city;
 
-    private Integer pincode;
+    @Positive(message = "{parking.list.pincode.positive}")
+    private int pincode;
 
+    @NotBlank(message = "{parking.list.address_line.not-blank}")
     private String address_line;
 
     private String locationUrl;
 
-    private Long price;  // per hours
+    @Positive(message = "{parking.list.price.positive}")
+    private long price;  // per hours
 
-    private Set<String> vehicleType;
+    @NotEmpty(message = "{parking.list.vehicle-type.not-empty}")
+    @Size(min = 1, max = 10, message = "{parking.list.vehicle-type.size}")
+    private Set<@NotBlank(message = "{parking.list.vehicle-type}") String> vehicleType;
 
     public String getState() {
         return state;
@@ -34,11 +46,11 @@ public class ListingRequest {
         this.city = city;
     }
 
-    public Integer getPincode() {
+    public int getPincode() {
         return pincode;
     }
 
-    public void setPincode(Integer pincode) {
+    public void setPincode(int pincode) {
         this.pincode = pincode;
     }
 
@@ -58,11 +70,11 @@ public class ListingRequest {
         this.locationUrl = locationUrl;
     }
 
-    public Long getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
