@@ -35,7 +35,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "waller_id", referencedColumnName = "walletId", unique = true, nullable = true)
     private Wallet wallet;
 

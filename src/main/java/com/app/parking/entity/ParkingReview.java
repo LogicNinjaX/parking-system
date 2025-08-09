@@ -14,11 +14,11 @@ public class ParkingReview {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID reviewId;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
     private User user;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "parking_id", referencedColumnName = "parkingId", nullable = false)
     private ParkingData parking;
 
