@@ -2,6 +2,7 @@ package com.app.parking.service.impl;
 
 import com.app.parking.dto.request.ListingRequest;
 import com.app.parking.dto.response.ListingResponse;
+import com.app.parking.dto.response.ParkingDataResponse;
 import com.app.parking.entity.ParkingData;
 import com.app.parking.entity.User;
 import com.app.parking.mapper.ParkingMapper;
@@ -11,9 +12,12 @@ import com.app.parking.service.ParkingService;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ParkingServiceImpl implements ParkingService {
@@ -46,5 +50,22 @@ public class ParkingServiceImpl implements ParkingService {
         }
 
         return parkingMapper.toListingResponse(parking);
+    }
+
+    @Override
+    public List<ParkingDataResponse> getAllParkingSpots(Pageable pageable)
+    {
+        return parkingRepository.findAll(pageable)
+                .get()
+                .map(parkingMapper::toParkingDataResponse)
+                .toList();
+    }
+
+    @Override
+    public List<ParkingDataResponse> getAvailableParkingSpots(Pageable pageable){
+        return parkingRepository.getAvailableParking(pageable)
+                .get()
+                .map(parkingMapper::toParkingDataResponse)
+                .toList();
     }
 }
