@@ -2,9 +2,12 @@ package com.app.parking.service.impl;
 
 import com.app.parking.dto.request.BookingRequest;
 import com.app.parking.dto.response.BookingResponse;
+import com.app.parking.entity.BookingHistory;
 import com.app.parking.entity.ParkingData;
+import com.app.parking.entity.User;
 import com.app.parking.entity.Wallet;
 import com.app.parking.exception.custom_exception.*;
+import com.app.parking.repository.BookingHistoryRepository;
 import com.app.parking.repository.ParkingRepository;
 import com.app.parking.repository.UserRepository;
 import com.app.parking.repository.WalletRepository;
@@ -27,12 +30,14 @@ public class BookingServiceImpl implements BookingService {
     private final ParkingRepository parkingRepository;
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
+    private final BookingHistoryRepository historyRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(BookingServiceImpl.class);
 
-    public BookingServiceImpl(ParkingRepository parkingRepository, UserRepository userRepository, WalletRepository walletRepository) {
+    public BookingServiceImpl(ParkingRepository parkingRepository, UserRepository userRepository, WalletRepository walletRepository, BookingHistoryRepository historyRepository) {
         this.parkingRepository = parkingRepository;
         this.userRepository = userRepository;
         this.walletRepository = walletRepository;
+        this.historyRepository = historyRepository;
     }
 
     @Transactional
@@ -42,22 +47,20 @@ public class BookingServiceImpl implements BookingService {
         ParkingData parking = parkingRepository.getParkingWithOwner(parkingId)
                 .orElseThrow(() -> new ParkingNotFoundException(parkingId));
 
-        if (parking.isBooked()){
-            LOGGER.warn("Parking spot: [{}] is already booked", parkingId);
-            throw new ParkingAlreadyBookedException("Parking already booked");
-        }
+        User user = userRepository.getReferenceById(userId);
+
+        validateBooking(parkingId, parking);
 
         Wallet userWallet = userRepository.findWalletByUserId(userId)
                 .orElseThrow(() -> new WalletNotFoundException("Wallet not found for user: "+userId));
 
         long bill = parking.getPrice() * request.getDuration();
 
-        if (userWallet.getBalance() < bill){
-            LOGGER.warn("User: [{}] has insufficient wallet balance", userId);
-            throw new BalanceErrorException("insufficient wallet balance");
-        }
+        validateBalance(userWallet.getBalance(), bill, userId);
 
         Wallet ownerWallet = parking.getOwner().getWallet();
+
+        var response = generateBookingResponse(request.getDuration(), bill);
 
         parking.setBooked(true);
         userWallet.setBalance(userWallet.getBalance() - bill);
@@ -65,6 +68,9 @@ public class BookingServiceImpl implements BookingService {
         try {
             parkingRepository.save(parking);
             walletRepository.saveAll(List.of(userWallet, ownerWallet));
+            historyRepository.save(
+                    new BookingHistory(user, parking, bill, response.getBookedAt())
+            );
             walletRepository.flush();
             parkingRepository.flush();
             LOGGER.info("Parking [{}] booked successfully by user [{}]", parkingId, userId);
@@ -73,13 +79,32 @@ public class BookingServiceImpl implements BookingService {
             throw new BookingFailedException("Booking failed for paring spot: "+parkingId);
         }
 
-        Duration duration = Duration.ofHours(request.getDuration());
+        return response;
+    }
+
+    public void validateBooking(UUID parkingId, ParkingData parkingData){
+        if (parkingData.isBooked()){
+            LOGGER.warn("Parking spot: [{}] is already booked", parkingId);
+            throw new ParkingAlreadyBookedException("Parking already booked");
+        }
+    }
+
+    public void validateBalance(double balance, long bill, UUID userId){
+        if (balance < bill){
+            LOGGER.warn("User: [{}] has insufficient wallet balance", userId);
+            throw new BalanceErrorException("insufficient wallet balance");
+        }
+    }
+
+    public BookingResponse generateBookingResponse(int bookingDuration, long bill){
+        Duration duration = Duration.ofHours(bookingDuration);
         LocalDateTime bookedAt = LocalDateTime.now();
         LocalDate endsDate = bookedAt.plus(duration).toLocalDate();
         LocalTime endTime = bookedAt.plus(duration).toLocalTime();
+
         return new BookingResponse.Builder()
                 .bill(bill)
-                .duration(request.getDuration())
+                .duration(bookingDuration)
                 .bookedAt(bookedAt)
                 .endDate(endsDate)
                 .endTime(endTime)
