@@ -2,6 +2,7 @@ package com.app.parking.mapper;
 
 import com.app.parking.dto.request.ListingRequest;
 import com.app.parking.dto.response.ListingResponse;
+import com.app.parking.dto.response.ParkingDataResponse;
 import com.app.parking.entity.ParkingData;
 import com.app.parking.entity.User;
 import org.mapstruct.Mapper;
@@ -20,4 +21,6 @@ public interface ParkingMapper {
     ParkingData toParking(ListingRequest request);
 
     ListingResponse toListingResponse(ParkingData parkingData);
+
+    ParkingDataResponse toParkingDataResponse(ParkingData parkingData);
 }
