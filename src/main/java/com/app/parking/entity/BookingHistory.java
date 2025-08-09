@@ -16,7 +16,7 @@ public class BookingHistory {
     @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
     private User user;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "parking_id", referencedColumnName = "parkingId", nullable = false)
     private ParkingData parkingData;
 
