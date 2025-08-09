@@ -9,6 +9,7 @@ import com.app.parking.dto.response.ParkingDataResponse;
 import com.app.parking.security.CustomUserDetails;
 import com.app.parking.service.BookingService;
 import com.app.parking.service.ParkingService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -48,7 +49,7 @@ public class ParkingController {
     @PostMapping(path = "/list", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ApiResponse<ListingResponse>> listParkingSpot(
             @AuthenticationPrincipal CustomUserDetails user,
-            @RequestBody ListingRequest request
+            @Valid @RequestBody ListingRequest request
             )
     {
         var response = parkingService.listParkingSpace(user.getUserId(), request);
@@ -61,7 +62,7 @@ public class ParkingController {
     public ResponseEntity<ApiResponse<BookingResponse>> bookParkingSpot(
             @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable("parking-id") UUID parkingId,
-            @RequestBody BookingRequest request
+            @Valid @RequestBody BookingRequest request
     )
     {
         var response = bookingService.bookParking(user.getUserId(), parkingId, request);

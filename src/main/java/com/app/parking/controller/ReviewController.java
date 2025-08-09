@@ -5,6 +5,7 @@ import com.app.parking.dto.response.ApiResponse;
 import com.app.parking.dto.response.ReviewDataResponse;
 import com.app.parking.security.CustomUserDetails;
 import com.app.parking.service.ReviewService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,7 +28,7 @@ public class ReviewController {
     public ResponseEntity<Void> createReview(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable("parking-id") UUID parkingId,
-            @RequestBody ReviewRequest request
+            @Valid @RequestBody ReviewRequest request
     )
     {
         reviewService.review(userDetails.getUserId(), parkingId, request);
