@@ -23,7 +23,9 @@ public class ParkingReview {
     private ParkingData parking;
 
     @Column(nullable = false)
-    private Integer rating;
+    private int rating;
+
+    private String comment;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -53,12 +55,20 @@ public class ParkingReview {
         this.parking = parking;
     }
 
-    public Integer getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public LocalDateTime getCreatedAt() {

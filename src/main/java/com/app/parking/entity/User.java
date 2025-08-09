@@ -43,6 +43,9 @@ public class User {
     private List<ParkingData> parkingList;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    private List<BookingHistory> bookingHistory;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private List<ParkingReview> myReviews;
 
     @CreationTimestamp
@@ -108,6 +111,22 @@ public class User {
 
     public void setParkingList(List<ParkingData> parkingList) {
         this.parkingList = parkingList;
+    }
+
+    public List<BookingHistory> getBookingHistory() {
+        return bookingHistory;
+    }
+
+    public void setBookingHistory(List<BookingHistory> bookingHistory) {
+        this.bookingHistory = bookingHistory;
+    }
+
+    public List<ParkingReview> getMyReviews() {
+        return myReviews;
+    }
+
+    public void setMyReviews(List<ParkingReview> myReviews) {
+        this.myReviews = myReviews;
     }
 
     public LocalDateTime getCreatedAt() {
