@@ -5,7 +5,6 @@ import com.app.parking.dto.response.BalanceResponse;
 import com.app.parking.dto.response.RechargeResponse;
 import com.app.parking.security.CustomUserDetails;
 import com.app.parking.service.WalletService;
-import jakarta.persistence.GeneratedValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,7 +20,7 @@ public class WalletController {
         this.walletService = walletService;
     }
 
-    @PostMapping("/recharge")
+    @PostMapping(path = "/recharge", produces = "application/json")
     public ResponseEntity<ApiResponse<RechargeResponse>> rechargeWallet(
             @AuthenticationPrincipal CustomUserDetails user,
             @RequestParam(name = "amount") Long amount
@@ -33,7 +32,7 @@ public class WalletController {
                 .body(new ApiResponse<>(true, "recharge successful", response));
     }
 
-    @GetMapping("/balance")
+    @GetMapping(path = "/balance", produces = "application/json")
     public ResponseEntity<ApiResponse<BalanceResponse>> getBalance(@AuthenticationPrincipal CustomUserDetails user){
         var response = walletService.getBalance(user.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
