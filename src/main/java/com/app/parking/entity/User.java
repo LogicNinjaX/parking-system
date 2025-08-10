@@ -17,6 +17,10 @@ import java.util.UUID;
                 @UniqueConstraint(
                         name = "uk_user_table_username",
                         columnNames = {"username"}
+                ),
+                @UniqueConstraint(
+                        name = "uk_user_table_email",
+                        columnNames = {"email"}
                 )
         }
 )
@@ -27,10 +31,16 @@ public class User {
     private UUID userId;
 
     @Column(nullable = false)
+    private String fullName;
+
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -73,6 +83,14 @@ public class User {
         this.userId = userId;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -87,6 +105,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public UserRole getRole() {
