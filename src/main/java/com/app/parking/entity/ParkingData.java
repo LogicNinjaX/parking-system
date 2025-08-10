@@ -22,14 +22,14 @@ public class ParkingData {
     @JoinColumn(name = "owner_id", referencedColumnName = "userId", nullable = false)
     private User owner;
 
-    private Boolean isDisabled = false;
+    private boolean isDisabled = false;
 
-    private Boolean isBooked = false;
+    private boolean isBooked = false;
 
     private String locationUrl;
 
     @Column(nullable = false)
-    private Long price;  // in hours
+    private long price;  // in hours
 
     @Column(nullable = false)
     private String state;
@@ -92,11 +92,11 @@ public class ParkingData {
         this.locationUrl = locationUrl;
     }
 
-    public Long getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
