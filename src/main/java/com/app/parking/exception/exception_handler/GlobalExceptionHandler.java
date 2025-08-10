@@ -15,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -62,10 +63,10 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse<>(false, "balance error", HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 
-    @ExceptionHandler(exception = {FieldUniqueException.class, DataIntegrityViolationException.class})
+    @ExceptionHandler(exception = {FieldUniqueException.class, SQLIntegrityConstraintViolationException.class, DataIntegrityViolationException.class})
     public ResponseEntity<ErrorResponse<String>> fieldUniqueHandler(FieldUniqueException e){
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(new ErrorResponse<>(false, "duplicate entry", HttpStatus.CONFLICT.value(), e.getMessage()));
+                .body(new ErrorResponse<>(false, "integrity violation", HttpStatus.CONFLICT.value(), e.getMessage()));
     }
 
     @ExceptionHandler(ReviewExistException.class)
