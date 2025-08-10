@@ -1,8 +1,11 @@
 package com.app.parking.service;
 
 import com.app.parking.dto.request.ListingRequest;
+import com.app.parking.dto.request.ParkingUpdateRequest;
 import com.app.parking.dto.response.ListingResponse;
 import com.app.parking.dto.response.ParkingDataResponse;
+import com.app.parking.dto.response.ParkingUpdateResponse;
+import com.app.parking.exception.custom_exception.ParkingNotFoundException;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -15,4 +18,10 @@ public interface ParkingService {
     List<ParkingDataResponse> getAllParkingSpots(Pageable pageable);
 
     List<ParkingDataResponse> getAvailableParkingSpots(Pageable pageable);
+
+    ParkingUpdateResponse updateParking(UUID ownerId, UUID parkingId, ParkingUpdateRequest request) throws ParkingNotFoundException;
+
+    void deleteOwnersParking(UUID ownerId, UUID parkingId);
+
+    void updateParkingStatus(UUID ownerId, UUID parkingId, boolean disable);
 }
