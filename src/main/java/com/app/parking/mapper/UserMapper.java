@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
+    @Mapping(target = "myReviews", ignore = true)
+    @Mapping(target = "bookingHistory", ignore = true)
     @Mapping(target = "wallet", ignore = true)
     @Mapping(target = "userId", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
