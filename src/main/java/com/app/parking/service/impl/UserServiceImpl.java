@@ -8,11 +8,10 @@ import com.app.parking.enums.UserRole;
 import com.app.parking.exception.custom_exception.FieldUniqueException;
 import com.app.parking.mapper.UserMapper;
 import com.app.parking.repository.UserRepository;
-import com.app.parking.repository.WalletRepository;
 import com.app.parking.service.UserService;
-import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,10 +38,12 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             user.setWallet(new Wallet()); // assigning a new wallet
             user = userRepository.save(user);
-        } catch (ConstraintViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             if (e.getMessage().contains("uk_user_table_username")) {
                 throw new FieldUniqueException("username");
-            } else {
+            } else if (e.getMessage().contains("uk_user_table_email")){
+                throw new FieldUniqueException("email");
+            }else {
                 throw new FieldUniqueException("field");
             }
         }
