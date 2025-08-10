@@ -1,10 +1,13 @@
 package com.app.parking.service.impl;
 
 import com.app.parking.dto.request.ListingRequest;
+import com.app.parking.dto.request.ParkingUpdateRequest;
 import com.app.parking.dto.response.ListingResponse;
 import com.app.parking.dto.response.ParkingDataResponse;
+import com.app.parking.dto.response.ParkingUpdateResponse;
 import com.app.parking.entity.ParkingData;
 import com.app.parking.entity.User;
+import com.app.parking.exception.custom_exception.ParkingNotFoundException;
 import com.app.parking.mapper.ParkingMapper;
 import com.app.parking.repository.ParkingRepository;
 import com.app.parking.repository.UserRepository;
@@ -17,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class ParkingServiceImpl implements ParkingService {
@@ -67,5 +69,69 @@ public class ParkingServiceImpl implements ParkingService {
                 .get()
                 .map(parkingMapper::toParkingDataResponse)
                 .toList();
+    }
+
+    @Transactional
+    @Override
+    public ParkingUpdateResponse updateParking(UUID ownerId, UUID parkingId, ParkingUpdateRequest request){
+        ParkingData parking = parkingRepository.getParkingByOwnerId(ownerId, parkingId)
+                .orElseThrow(() -> new ParkingNotFoundException("Parking not found created by owner: [%s]".formatted(ownerId.toString())));
+
+        updateValidator(parking, request);
+
+        parking = parkingRepository.saveAndFlush(parking);
+        LOGGER.info("Parking: [{}] updated successfully", parking.getParkingId());
+
+        return parkingMapper.toUpdateResponse(parking);
+    }
+
+    public void updateValidator(ParkingData parking, ParkingUpdateRequest request){
+        if (parking.getDisabled() != request.getDisable()){
+            parking.setDisabled(request.getDisable());
+        }
+
+        if (parking.getLocationUrl() != null && !parking.getLocationUrl().equals(request.getLocationUrl())){
+            parking.setLocationUrl(request.getLocationUrl());
+        }
+
+        if (parking.getPrice() != request.getPrice()){
+            parking.setPrice(request.getPrice());
+        }
+
+        if (!parking.getState().equals(request.getState())){
+            parking.setState(request.getState());
+        }
+
+        if (!parking.getCity().equals(request.getCity())){
+            parking.setCity(request.getCity());
+        }
+
+        if (parking.getPincode() != request.getPincode()){
+            parking.setPincode(request.getPincode());
+        }
+
+        if (parking.getAddress_line() != null && !parking.getAddress_line().equals(request.getAddress_line())){
+            parking.setAddress_line(request.getAddress_line());
+        }
+
+        parking.setVehicleType(request.getVehicleType());
+    }
+
+    @Override
+    public void deleteOwnersParking(UUID ownerId, UUID parkingId){
+        int updatedRows = parkingRepository.deleteOwnersParking(ownerId, parkingId);
+
+        if (updatedRows > 0){
+            LOGGER.info("Parking: [{}] deleted successfully", parkingId);
+        }
+    }
+
+    @Override
+    public void updateParkingStatus(UUID ownerId, UUID parkingId, boolean disable){
+        int updatedRows = parkingRepository.updateActivation(ownerId, parkingId, disable);
+
+        if (updatedRows > 0){
+            LOGGER.info("Parking: [{}] status updated successfully", parkingId);
+        }
     }
 }
