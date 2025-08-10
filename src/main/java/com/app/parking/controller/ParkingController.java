@@ -2,10 +2,8 @@ package com.app.parking.controller;
 
 import com.app.parking.dto.request.BookingRequest;
 import com.app.parking.dto.request.ListingRequest;
-import com.app.parking.dto.response.ApiResponse;
-import com.app.parking.dto.response.BookingResponse;
-import com.app.parking.dto.response.ListingResponse;
-import com.app.parking.dto.response.ParkingDataResponse;
+import com.app.parking.dto.request.ParkingUpdateRequest;
+import com.app.parking.dto.response.*;
 import com.app.parking.security.CustomUserDetails;
 import com.app.parking.service.BookingService;
 import com.app.parking.service.ParkingService;
@@ -68,5 +66,38 @@ public class ParkingController {
         var response = bookingService.bookParking(user.getUserId(), parkingId, request);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ApiResponse<>(true, "parking spot booked successfully", response));
+    }
+
+    @PutMapping(path = "/{parking-id}", produces = "application/json", consumes = "application/json")
+    public ResponseEntity<ApiResponse<ParkingUpdateResponse>> updateParking(
+            @AuthenticationPrincipal CustomUserDetails user,
+            @PathVariable("parking-id") UUID parkingId,
+            @Valid @RequestBody ParkingUpdateRequest request
+    )
+    {
+        var response = parkingService.updateParking(user.getUserId(), parkingId, request);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ApiResponse<>(true, "parking updated successfully", response));
+    }
+
+    @DeleteMapping(path = "/{parking-id}")
+    public ResponseEntity<Void> deleteParking(
+            @AuthenticationPrincipal CustomUserDetails user,
+            @PathVariable("parking-id") UUID parkingId
+    ){
+        parkingService.deleteOwnersParking(user.getUserId(), parkingId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PutMapping(path = "/{parking-id}")
+    public ResponseEntity<Void> updateParkingStatus(
+            @AuthenticationPrincipal CustomUserDetails user,
+            @PathVariable("parking-id") UUID parkingId,
+            @RequestParam boolean status
+    )
+    {
+        parkingService.updateParkingStatus(user.getUserId(), parkingId, status);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
     }
 }
