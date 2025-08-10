@@ -6,4 +6,8 @@ public class ParkingNotFoundException extends EntityNotFoundException{
     public ParkingNotFoundException(UUID parkingId) {
         super("Parking", parkingId);
     }
+
+    public ParkingNotFoundException(String message) {
+        super(message);
+    }
 }
