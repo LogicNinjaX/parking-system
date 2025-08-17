@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recharge Confirmation</title>
+</head>
+<body style="margin:0; padding:0; font-family: Courier, sans-serif;">
+
+<table align="center" width="600" cellpadding="0" cellspacing="0" border="0"
+       style="border:1px solid #ddd; border-radius:10px; background:#fff;margin-top: 10px;">
+    <tr>
+        <td align="center" style="padding:30px;">
+            <h1 style="color:green; margin:0;">Recharge Successful</h1>
+            <p style="color:#666; margin:10px 0 20px;">Your transaction has been successfully completed</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td style="padding:20px;">
+            <table width="100%" cellpadding="10" cellspacing="0" border="0" style="border-collapse: collapse;">
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Name:</strong>
+                        <span th:text="${userName}">Your name</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Email:</strong>
+                        <span th:text="${userEmail}">Your email</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Wallet:</strong>
+                        <span th:text="${walletId}">Your wallet</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Amount:</strong>
+                        <span th:text="${amount}">Recharge Amount</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Balance:</strong>
+                        <span th:text="${balance}">Wallet Balance</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Date:</strong>
+                        <span th:text="${date}">Recharge Date</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Time:</strong>
+                        <span th:text="${time}">Recharge Time</span>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

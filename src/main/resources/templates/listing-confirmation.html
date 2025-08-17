@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing Confirmation</title>
+</head>
+
+<body style="margin:0; padding:0; font-family: Courier, sans-serif;">
+
+<table align="center" width="600" cellpadding="0" cellspacing="0" border="0"
+       style="border:1px solid #ddd; border-radius:10px; background:#fff;margin-top: 10px;">
+    <tr>
+        <td align="center" style="padding:30px;">
+            <h1 style="color:green; margin:0;">Listing Confirmation</h1>
+            <p style="color:#666; margin:10px 0 20px;">
+                Congrats your parking area has been successfully listed. You can check the details on the website in some time. We hope you are happy with our service.
+            </p>
+        </td>
+    </tr>
+
+    <tr>
+        <td style="padding:20px;">
+            <table width="100%" cellpadding="10" cellspacing="0" border="0" style="border-collapse: collapse;">
+
+                <h3 style="text-align: center; border: 1px solid black;
+                padding: 3px;">
+                    Parking Details
+                </h3>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Parking Id:</strong>
+                        <span th:text="${parkingId}">not found
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Disabled:</strong>
+                        <span th:text="${disabled}">not found</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Price:</strong>
+                        <span th:text="${price}">not found</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">State:</strong>
+                        <span th:text="${state}">not found</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">City:</strong>
+                        <span th:text="${city}">not found</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Pin Code:</strong>
+                        <span th:text="${pinCode}">not found</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Address Line:</strong>
+                        <span th:text="${addressLine}">not found</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Vehicle Type:</strong>
+                        <span th:text="${vehicleType}">not found</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border:1px solid #ccc; border-radius:5px;">
+                        <strong style="color:grey;">Listing Date:</strong>
+                        <span th:text="${listingDate}">not found</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+
+</html>
