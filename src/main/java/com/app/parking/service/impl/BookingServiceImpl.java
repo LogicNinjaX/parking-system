@@ -6,6 +6,7 @@ import com.app.parking.entity.BookingHistory;
 import com.app.parking.entity.ParkingData;
 import com.app.parking.entity.User;
 import com.app.parking.entity.Wallet;
+import com.app.parking.event.publisher.BookingEventPublisher;
 import com.app.parking.exception.custom_exception.*;
 import com.app.parking.repository.BookingHistoryRepository;
 import com.app.parking.repository.ParkingRepository;
@@ -31,13 +32,15 @@ public class BookingServiceImpl implements BookingService {
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
     private final BookingHistoryRepository historyRepository;
+    private final BookingEventPublisher bookingEventPublisher;
     private static final Logger LOGGER = LoggerFactory.getLogger(BookingServiceImpl.class);
 
-    public BookingServiceImpl(ParkingRepository parkingRepository, UserRepository userRepository, WalletRepository walletRepository, BookingHistoryRepository historyRepository) {
+    public BookingServiceImpl(ParkingRepository parkingRepository, UserRepository userRepository, WalletRepository walletRepository, BookingHistoryRepository historyRepository, BookingEventPublisher bookingEventPublisher) {
         this.parkingRepository = parkingRepository;
         this.userRepository = userRepository;
         this.walletRepository = walletRepository;
         this.historyRepository = historyRepository;
+        this.bookingEventPublisher = bookingEventPublisher;
     }
 
     @Transactional
@@ -47,7 +50,7 @@ public class BookingServiceImpl implements BookingService {
         ParkingData parking = parkingRepository.getParkingWithOwner(parkingId)
                 .orElseThrow(() -> new ParkingNotFoundException(parkingId));
 
-        User user = userRepository.getReferenceById(userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         validateBooking(parkingId, parking);
 
@@ -79,6 +82,7 @@ public class BookingServiceImpl implements BookingService {
             throw new BookingFailedException("Booking failed for paring spot: "+parkingId);
         }
 
+        bookingEventPublisher.publish(parking, user, response);
         return response;
     }
 
