@@ -1,24 +1,36 @@
 spring:
-    application:
-         name: parking
+  application:
+    name: parking
 
 
-    datasource:
-      url: ${DB_URL}
-      username: ${DB_UNAME}
-      password: ${DB_PASS}
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_UNAME}
+    password: ${DB_PASS}
 
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
       hibernate:
-        ddl-auto: update
-      properties:
-        hibernate:
-          format_sql: true
-          highlight_sql: true
-      show-sql: true
+        format_sql: true
+        highlight_sql: true
+    show-sql: true
 
-    messages:
-      basename: messages
+  messages:
+    basename: messages
+
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_UNAME}
+    password: ${SMTP_PASS}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 
 jwt:
