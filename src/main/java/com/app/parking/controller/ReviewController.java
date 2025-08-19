@@ -5,6 +5,8 @@ import com.app.parking.dto.response.ApiResponse;
 import com.app.parking.dto.response.ReviewDataResponse;
 import com.app.parking.security.CustomUserDetails;
 import com.app.parking.service.ReviewService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/review")
+@Tag(name = "Review Management", description = "Endpoints related to rating/review")
 public class ReviewController {
 
     private final ReviewService reviewService;
@@ -24,6 +27,7 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+    @Operation(summary = "Create Review", description = "Saves user review for attached parking id")
     @PostMapping(path = "/{parking-id}", consumes = "application/json")
     public ResponseEntity<Void> createReview(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -35,6 +39,7 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @Operation(summary = "Get Reviews", description = "Returns pages of reviews of attached parking id")
     @GetMapping(path = "/{parking-id}", produces = "application/json")
     public ResponseEntity<ApiResponse<List<ReviewDataResponse>>> getAllReviewsByParking(
             @PathVariable("parking-id") UUID parkingId,

@@ -4,6 +4,8 @@ import com.app.parking.dto.response.ApiResponse;
 import com.app.parking.dto.response.BookingHistoryDataResponse;
 import com.app.parking.security.CustomUserDetails;
 import com.app.parking.service.BookingHistoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/bookings")
+@Tag(name = "History Management", description = "Endpoints for fetching booking history")
 public class HistoryController {
 
     private final BookingHistoryService historyService;
@@ -24,6 +27,7 @@ public class HistoryController {
         this.historyService = historyService;
     }
 
+    @Operation(summary = "Booking History", description = "Returns booking history of currently authenticated user")
     @GetMapping(path = "/my", produces = "application/json")
     public ResponseEntity<ApiResponse<List<BookingHistoryDataResponse>>> getMyBookingHistory(
             @AuthenticationPrincipal CustomUserDetails userDetails,

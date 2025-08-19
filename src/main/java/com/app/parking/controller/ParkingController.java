@@ -7,7 +7,10 @@ import com.app.parking.dto.response.*;
 import com.app.parking.security.CustomUserDetails;
 import com.app.parking.service.BookingService;
 import com.app.parking.service.ParkingService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jdk.jfr.Percentage;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -21,6 +24,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/parking")
+@Tag(name = "Parking Management", description = "Endpoints related to booking, listing, deleting parking etc.")
 public class ParkingController {
 
     private final ParkingService parkingService;
@@ -31,6 +35,7 @@ public class ParkingController {
         this.bookingService = bookingService;
     }
 
+    @Operation(summary = "Get available parking spaces", description = "Returns available/unavailable parking spaces")
     @GetMapping(produces = "application/json")
     public ResponseEntity<ApiResponse<List<ParkingDataResponse>>> getParkingSpots(
             @PageableDefault(sort = {"price"}, direction = Sort.Direction.ASC) Pageable pageable,
@@ -44,6 +49,7 @@ public class ParkingController {
                 .body(new ApiResponse<>(true, "parking spots fetched successfully", parkingList));
     }
 
+    @Operation(summary = "List parking", description = "Registers parking space for listing")
     @PostMapping(path = "/list", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ApiResponse<ListingResponse>> listParkingSpot(
             @AuthenticationPrincipal CustomUserDetails user,
@@ -56,6 +62,7 @@ public class ParkingController {
                 .body(new ApiResponse<>(true, "parking spot saved successfully", response));
     }
 
+    @Operation(summary = "Book space", description = "Books parking space and returns details with bill")
     @PostMapping(path = "/book/{parking-id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ApiResponse<BookingResponse>> bookParkingSpot(
             @AuthenticationPrincipal CustomUserDetails user,
@@ -68,6 +75,7 @@ public class ParkingController {
                 .body(new ApiResponse<>(true, "parking spot booked successfully", response));
     }
 
+    @Operation(summary = "Update parking", description = "Returns update parking space")
     @PutMapping(path = "/{parking-id}", produces = "application/json", consumes = "application/json")
     public ResponseEntity<ApiResponse<ParkingUpdateResponse>> updateParking(
             @AuthenticationPrincipal CustomUserDetails user,
@@ -80,6 +88,7 @@ public class ParkingController {
                 .body(new ApiResponse<>(true, "parking updated successfully", response));
     }
 
+    @Operation(summary = "Delete Parking", description = "Deletes parking space based on provided parking id")
     @DeleteMapping(path = "/{parking-id}")
     public ResponseEntity<Void> deleteParking(
             @AuthenticationPrincipal CustomUserDetails user,
@@ -89,6 +98,7 @@ public class ParkingController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @Operation(summary = "Update Status", description = "Updates parking status eg. disabled = true/false")
     @PutMapping(path = "/{parking-id}")
     public ResponseEntity<Void> updateParkingStatus(
             @AuthenticationPrincipal CustomUserDetails user,

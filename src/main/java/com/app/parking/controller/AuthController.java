@@ -8,6 +8,8 @@ import com.app.parking.dto.response.RegisterResponse;
 import com.app.parking.entity.User;
 import com.app.parking.service.UserService;
 import com.app.parking.util.JwtTokenUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@Tag(name = "User Authentication", description = "Endpoints related to user authentication eg. login/register")
 public class AuthController {
 
     private final UserService userService;
@@ -37,6 +40,7 @@ public class AuthController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
+    @Operation(summary = "Register user", description = "Returns registered user details")
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ApiResponse<RegisterResponse>> register(@Valid @RequestBody RegisterRequest request){
         var response = userService.registerUser(request);
@@ -46,6 +50,7 @@ public class AuthController {
     }
 
 
+    @Operation(summary = "User login", description = "Returns jwt token")
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ApiResponse<Map<String, String>>> login(@Valid @RequestBody LoginRequest request){
         Authentication authentication =
