@@ -72,7 +72,7 @@ public class BookingServiceImpl implements BookingService {
             parkingRepository.save(parking);
             walletRepository.saveAll(List.of(userWallet, ownerWallet));
             historyRepository.save(
-                    new BookingHistory(user, parking, bill, response.getBookedAt())
+                    new BookingHistory(user, parking, bill, response.getBookedAt(), response.getBookedAt().plusHours(request.getDuration()))
             );
             walletRepository.flush();
             parkingRepository.flush();
