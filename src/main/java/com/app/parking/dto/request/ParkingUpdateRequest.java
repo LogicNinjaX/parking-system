@@ -1,24 +1,35 @@
 package com.app.parking.dto.request;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.Set;
 
+@Schema(description = "Parking update request")
 public class ParkingUpdateRequest {
 
+    @Schema(description = "Parking status value true for enable and false for disable", example = "false")
     private boolean disable;
 
+    @Schema(description = "Parking location url (google maps, apple maps...)", example = "https://maps.google.com/?q=ankurvihar")
     private String locationUrl;
 
+    @Schema(description = "Parking price", example = "500")
     private long price;  // in hours
 
+    @Schema(description = "State", example = "Uttar Pradesh")
     private String state;
 
+    @Schema(description = "Parking city", example = "Lucknow")
     private String city;
 
+    @Schema(description = "Parking pincode", example = "201102")
     private int pincode;
 
+    @Schema(description = "Address line", example = "House no - xyz, colony, landmark")
     private String address_line;
 
+    @Schema(description = "Vehicle types", example = "['Bus', 'Car', 'Bike']")
     private Set<String> vehicleType;
 
     public boolean getDisable() {

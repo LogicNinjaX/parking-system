@@ -1,5 +1,6 @@
 package com.app.parking.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
@@ -7,25 +8,33 @@ import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
+@Schema(description = "Listing request schema")
 public class ListingRequest {
 
+    @Schema(description = "State", example = "Uttar Pradesh")
     @NotBlank(message = "{parking.list.state.not-blank}")
     private String state;
 
+    @Schema(description = "Parking city", example = "Lucknow")
     @NotBlank(message = "{parking.list.city.not-blank}")
     private String city;
 
+    @Schema(description = "Parking pincode", example = "201102")
     @Positive(message = "{parking.list.pincode.positive}")
     private int pincode;
 
+    @Schema(description = "Address line", example = "House no - xyz, colony, landmark")
     @NotBlank(message = "{parking.list.address_line.not-blank}")
     private String address_line;
 
+    @Schema(description = "Parking location url (google maps, apple maps...)", example = "https://maps.google.com/?q=ankurvihar")
     private String locationUrl;
 
+    @Schema(description = "Parking price", example = "500")
     @Positive(message = "{parking.list.price.positive}")
     private long price;  // per hours
 
+    @Schema(description = "Vehicle types", example = "['Bus', 'Car', 'Bike']")
     @NotEmpty(message = "{parking.list.vehicle-type.not-empty}")
     @Size(min = 1, max = 10, message = "{parking.list.vehicle-type.size}")
     private Set<@NotBlank(message = "{parking.list.vehicle-type}") String> vehicleType;
