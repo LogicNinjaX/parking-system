@@ -8,8 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,4 +36,11 @@ public class BookingHistoryServiceImpl implements BookingHistoryService {
                 .map(historyMapper::toHistoryResponse)
                 .toList();
     }
+
+    @Scheduled(fixedDelay = 600000)
+    public void updateBookingStatus(){
+        historyRepository.updateStatus(LocalDateTime.now().plusDays(2));
+        LOGGER.info("Booking status updated successfully by scheduler");
+    }
+
 }
