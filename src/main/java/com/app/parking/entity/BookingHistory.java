@@ -24,14 +24,17 @@ public class BookingHistory {
 
     private LocalDateTime bookedAt;
 
+    private LocalDateTime endAt;
+
     public BookingHistory() {
     }
 
-    public BookingHistory(User user, ParkingData parkingData, long totalBill, LocalDateTime bookedAt) {
+    public BookingHistory(User user, ParkingData parkingData, long totalBill, LocalDateTime bookedAt, LocalDateTime endAt) {
         this.user = user;
         this.parkingData = parkingData;
         this.totalBill = totalBill;
         this.bookedAt = bookedAt;
+        this.endAt = endAt;
     }
 
     public UUID getBookingId() {
@@ -72,5 +75,13 @@ public class BookingHistory {
 
     public void setBookedAt(LocalDateTime bookedAt) {
         this.bookedAt = bookedAt;
+    }
+
+    public LocalDateTime getEndAt() {
+        return endAt;
+    }
+
+    public void setEndAt(LocalDateTime endAt) {
+        this.endAt = endAt;
     }
 }
