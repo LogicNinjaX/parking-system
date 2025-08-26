@@ -4,6 +4,7 @@ import com.app.parking.dto.request.BookingRequest;
 import com.app.parking.dto.request.ListingRequest;
 import com.app.parking.dto.request.ParkingUpdateRequest;
 import com.app.parking.dto.response.*;
+import com.app.parking.entity.ParkingData;
 import com.app.parking.security.CustomUserDetails;
 import com.app.parking.service.BookingService;
 import com.app.parking.service.ParkingService;
@@ -109,5 +110,20 @@ public class ParkingController {
         parkingService.updateParkingStatus(user.getUserId(), parkingId, status);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
+    }
+
+    @Operation(summary = "My Parking Spaces", description = "Returns current users listed parking spots")
+    @GetMapping(path = "/my", produces = "application/json")
+    public ResponseEntity<ApiResponse<List<ParkingDataResponse>>> getMyParkingSpots(
+            @AuthenticationPrincipal CustomUserDetails user,
+            @RequestParam(defaultValue = "0", required = false) int page,
+            @RequestParam(defaultValue = "10", required = false) int size,
+            @RequestParam(defaultValue = "createdAt", required = false) String sort,
+            @RequestParam(defaultValue = "asc", required = false) String dir
+    )
+    {
+        var response = parkingService.getMyParkingSpots(user.getUserId(), page, size,sort, dir);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ApiResponse<>(true, "parking data fetched successfully", response));
     }
 }
