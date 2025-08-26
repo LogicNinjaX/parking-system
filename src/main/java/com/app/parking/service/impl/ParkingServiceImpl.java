@@ -17,7 +17,9 @@ import com.app.parking.service.ParkingService;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -139,5 +141,22 @@ public class ParkingServiceImpl implements ParkingService {
         if (updatedRows > 0){
             LOGGER.info("Parking: [{}] status updated successfully", parkingId);
         }
+    }
+
+
+    @Override
+    public List<ParkingDataResponse> getMyParkingSpots(UUID userId, int page, int size, String sort, String dir){
+        Sort sorting = Sort.by(Sort.Direction.ASC, sort);
+
+        if (dir.equalsIgnoreCase("desc")){
+            sorting = Sort.by(Sort.Direction.DESC, sort);
+        }
+
+        Pageable pageable = PageRequest.of(page, size, sorting);
+
+        return  parkingRepository.getAllUsersParking(userId, pageable)
+                .get()
+                .map(parkingMapper::toParkingDataResponse)
+                .toList();
     }
 }
