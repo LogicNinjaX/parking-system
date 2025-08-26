@@ -31,4 +31,7 @@ public interface ParkingRepository extends JpaRepository<ParkingData, UUID> {
     @Modifying
     @Query("UPDATE ParkingData p SET p.isDisabled = :disable WHERE p.parkingId = :parkingId AND p.owner.userId = :ownerId")
     int updateActivation(UUID ownerId, UUID parkingId, boolean disable);
+
+    @Query("SELECT p FROM ParkingData p WHERE p.owner.userId = :ownerId")
+    Page<ParkingData> getAllUsersParking(UUID ownerId, Pageable pageable);
 }
