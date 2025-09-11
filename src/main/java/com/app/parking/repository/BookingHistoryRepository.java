@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface BookingHistoryRepository extends JpaRepository<BookingHistory, UUID> {
@@ -23,4 +24,7 @@ public interface BookingHistoryRepository extends JpaRepository<BookingHistory, 
     @Modifying
     @Query("UPDATE BookingHistory bh SET bh.parkingData.isBooked = false WHERE bh.parkingData.isBooked = true AND bh.endAt < :dateTime")
     void updateStatus(LocalDateTime dateTime);
+
+    @Query("SELECT bh FROM BookingHistory bh WHERE bh.user.userId = :userId AND bh.parkingData.parkingId = :parkingId AND bh.endAt > :currentDate ORDER BY bh.endAt DESC LIMIT 1")
+    Optional<BookingHistory> getLiveBooking(UUID userId, UUID parkingId, LocalDateTime currentDate);
 }
