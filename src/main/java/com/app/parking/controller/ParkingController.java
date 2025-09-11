@@ -4,14 +4,12 @@ import com.app.parking.dto.request.BookingRequest;
 import com.app.parking.dto.request.ListingRequest;
 import com.app.parking.dto.request.ParkingUpdateRequest;
 import com.app.parking.dto.response.*;
-import com.app.parking.entity.ParkingData;
 import com.app.parking.security.CustomUserDetails;
 import com.app.parking.service.BookingService;
 import com.app.parking.service.ParkingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jdk.jfr.Percentage;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -125,5 +123,18 @@ public class ParkingController {
         var response = parkingService.getMyParkingSpots(user.getUserId(), page, size,sort, dir);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ApiResponse<>(true, "parking data fetched successfully", response));
+    }
+
+    @Operation(summary = "Cancel Booking", description = "Returns true after successful cancellation")
+    @PostMapping(path = "/cancel", produces = "application/json")
+    public ResponseEntity<ApiResponse<Void>> cancelBooking(
+            @AuthenticationPrincipal CustomUserDetails user,
+            @RequestParam UUID parkingId
+    )
+    {
+        var response = bookingService.cancelBooking(user.getUserId(), parkingId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(response);
     }
 }
