@@ -2,10 +2,7 @@ package com.app.parking.exception.exception_handler;
 
 
 import com.app.parking.dto.response.ErrorResponse;
-import com.app.parking.exception.custom_exception.BalanceErrorException;
-import com.app.parking.exception.custom_exception.BookingFailedException;
-import com.app.parking.exception.custom_exception.FieldUniqueException;
-import com.app.parking.exception.custom_exception.ReviewExistException;
+import com.app.parking.exception.custom_exception.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -73,6 +70,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse<String>> reviewExistError(ReviewExistException e){
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErrorResponse<>(false, "review already exist", HttpStatus.CONFLICT.value(), e.getMessage()));
+    }
+
+    @ExceptionHandler(CancellationFailedException.class)
+    public ResponseEntity<ErrorResponse<String>> handlerFailedCancellation(CancellationFailedException ex){
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse<>(false, "Failed to cancel booking", HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage()));
     }
 
 }
