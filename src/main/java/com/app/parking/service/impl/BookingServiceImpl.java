@@ -1,6 +1,7 @@
 package com.app.parking.service.impl;
 
 import com.app.parking.dto.request.BookingRequest;
+import com.app.parking.dto.response.ApiResponse;
 import com.app.parking.dto.response.BookingResponse;
 import com.app.parking.entity.BookingHistory;
 import com.app.parking.entity.ParkingData;
@@ -86,21 +87,21 @@ public class BookingServiceImpl implements BookingService {
         return response;
     }
 
-    public void validateBooking(UUID parkingId, ParkingData parkingData){
+    private void validateBooking(UUID parkingId, ParkingData parkingData){
         if (parkingData.isBooked()){
             LOGGER.warn("Parking spot: [{}] is already booked", parkingId);
             throw new ParkingAlreadyBookedException("Parking already booked");
         }
     }
 
-    public void validateBalance(double balance, long bill, UUID userId){
+    private void validateBalance(double balance, long bill, UUID userId){
         if (balance < bill){
             LOGGER.warn("User: [{}] has insufficient wallet balance", userId);
             throw new BalanceErrorException("insufficient wallet balance");
         }
     }
 
-    public BookingResponse generateBookingResponse(int bookingDuration, long bill){
+    private BookingResponse generateBookingResponse(int bookingDuration, long bill){
         Duration duration = Duration.ofHours(bookingDuration);
         LocalDateTime bookedAt = LocalDateTime.now();
         LocalDate endsDate = bookedAt.plus(duration).toLocalDate();
@@ -113,5 +114,52 @@ public class BookingServiceImpl implements BookingService {
                 .endDate(endsDate)
                 .endTime(endTime)
                 .build();
+    }
+
+
+    @Transactional
+    @Override
+    public ApiResponse<Void> cancelBooking(UUID userId, UUID parkingId){
+
+        try {
+            BookingHistory bookingHistory = historyRepository
+                    .getLiveBooking(userId, parkingId, LocalDateTime.now())
+                    .orElseThrow(() -> new BookingNotFoundException(userId, parkingId));
+
+            Wallet userWallet = userRepository.findWalletByUserId(userId)
+                    .orElseThrow(() -> new WalletNotFoundException("Wallet not found for user: " + userId));
+
+            ParkingData parking = parkingRepository.getParkingWithOwner(parkingId)
+                    .orElseThrow(() -> new ParkingNotFoundException(parkingId));
+
+            Wallet ownerWallet = parking.getOwner().getWallet();
+
+
+            releaseParking(parking);
+
+            processRefund(userWallet, ownerWallet, bookingHistory.getTotalBill());
+
+            LOGGER.info("Booking cancellation successfully completed for parking: {} by user : {}", parkingId, userId);
+
+            return new ApiResponse<>(true, "Booking cancellation successfully completed", null);
+        }catch (BookingNotFoundException | WalletNotFoundException | ParkingNotFoundException  ex){
+            throw ex;
+        }
+        catch(Exception ex){
+            LOGGER.error("Unexpected error during cancellation: userId={}, parkingId={}", userId, parkingId, ex);
+            throw new CancellationFailedException("Unexpected failure while cancelling booking " + parkingId);
+        }
+    }
+
+    private void releaseParking(ParkingData parking) {
+        parking.setBooked(false);
+        parkingRepository.saveAndFlush(parking);
+    }
+
+    private void processRefund(Wallet userWallet, Wallet ownerWallet, Long amount){
+        ownerWallet.setBalance(ownerWallet.getBalance() - amount);
+        userWallet.setBalance(userWallet.getBalance() + amount);
+
+        walletRepository.saveAllAndFlush(List.of(userWallet, ownerWallet));
     }
 }
