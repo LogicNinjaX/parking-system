@@ -63,7 +63,7 @@ public class ParkingController {
     }
 
     @Operation(summary = "Book space", description = "Books parking space and returns details with bill")
-    @PostMapping(path = "/book/{parking-id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "{parking-id}/book", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<BookingResponse>> bookParkingSpot(
             @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable("parking-id") UUID parkingId,
