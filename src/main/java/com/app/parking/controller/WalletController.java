@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.MediaType.*;
 
 @RestController
-@RequestMapping("/api/v1/wallet")
+@RequestMapping("/api/v1/wallets")
 @Tag(name = "Wallet Management", description = "Endpoints related for wallet eg. recharge/fetch balance")
 public class WalletController {
 

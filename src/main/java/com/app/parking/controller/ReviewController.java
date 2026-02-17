@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/review")
+@RequestMapping("/api/v1/reviews")
 @Tag(name = "Review Management", description = "Endpoints related to rating/review")
 public class ReviewController {
 

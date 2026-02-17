@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/parking")
+@RequestMapping("/api/v1/parkings")
 @Tag(name = "Parking Management", description = "Endpoints related to booking, listing, deleting parking etc.")
 public class ParkingController {
 
