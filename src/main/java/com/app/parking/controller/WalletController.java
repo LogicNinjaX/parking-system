@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import static org.springframework.http.MediaType.*;
 
 @RestController
 @RequestMapping("/api/v1/wallet")
@@ -24,7 +25,7 @@ public class WalletController {
     }
 
     @Operation(summary = "Recharge Wallet", description = "Loads balance in user's wallet based on provided amount")
-    @PostMapping(path = "/recharge", produces = "application/json")
+    @PostMapping(path = "/recharge", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<RechargeResponse>> rechargeWallet(
             @AuthenticationPrincipal CustomUserDetails user,
             @RequestParam(name = "amount") Long amount
@@ -37,7 +38,7 @@ public class WalletController {
     }
 
     @Operation(summary = "Get Balance", description = "Returns user balance")
-    @GetMapping(path = "/balance", produces = "application/json")
+    @GetMapping(path = "/balance", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<BalanceResponse>> getBalance(@AuthenticationPrincipal CustomUserDetails user){
         var response = walletService.getBalance(user.getUserId());
         return ResponseEntity.status(HttpStatus.OK)

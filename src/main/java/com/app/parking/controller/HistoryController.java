@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import static org.springframework.http.MediaType.*;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class HistoryController {
     }
 
     @Operation(summary = "Booking History", description = "Returns booking history of currently authenticated user")
-    @GetMapping(path = "/my", produces = "application/json")
+    @GetMapping(path = "/my", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<List<BookingHistoryDataResponse>>> getMyBookingHistory(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam(defaultValue = "0", required = false) int page,

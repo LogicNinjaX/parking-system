@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import static org.springframework.http.MediaType.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +29,7 @@ public class ReviewController {
     }
 
     @Operation(summary = "Create Review", description = "Saves user review for attached parking id")
-    @PostMapping(path = "/{parking-id}", consumes = "application/json")
+    @PostMapping(path = "/{parking-id}", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createReview(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable("parking-id") UUID parkingId,
@@ -40,7 +41,7 @@ public class ReviewController {
     }
 
     @Operation(summary = "Get Reviews", description = "Returns pages of reviews of attached parking id")
-    @GetMapping(path = "/{parking-id}", produces = "application/json")
+    @GetMapping(path = "/{parking-id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<List<ReviewDataResponse>>> getAllReviewsByParking(
             @PathVariable("parking-id") UUID parkingId,
             @RequestParam(defaultValue = "0", required = false) int page,

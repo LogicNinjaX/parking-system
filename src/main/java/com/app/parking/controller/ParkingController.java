@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import static org.springframework.http.MediaType.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +36,7 @@ public class ParkingController {
     }
 
     @Operation(summary = "Get available parking spaces", description = "Returns available/unavailable parking spaces")
-    @GetMapping(produces = "application/json")
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<List<ParkingDataResponse>>> getParkingSpots(
             @PageableDefault(sort = {"price"}, direction = Sort.Direction.ASC) Pageable pageable,
             @RequestParam(required = false) boolean available
@@ -49,7 +50,7 @@ public class ParkingController {
     }
 
     @Operation(summary = "List parking", description = "Registers parking space for listing")
-    @PostMapping(path = "/list", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/list", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<ListingResponse>> listParkingSpot(
             @AuthenticationPrincipal CustomUserDetails user,
             @Valid @RequestBody ListingRequest request
@@ -62,7 +63,7 @@ public class ParkingController {
     }
 
     @Operation(summary = "Book space", description = "Books parking space and returns details with bill")
-    @PostMapping(path = "/book/{parking-id}", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/book/{parking-id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<BookingResponse>> bookParkingSpot(
             @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable("parking-id") UUID parkingId,
@@ -75,7 +76,7 @@ public class ParkingController {
     }
 
     @Operation(summary = "Update parking", description = "Returns update parking space")
-    @PutMapping(path = "/{parking-id}", produces = "application/json", consumes = "application/json")
+    @PutMapping(path = "/{parking-id}", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<ParkingUpdateResponse>> updateParking(
             @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable("parking-id") UUID parkingId,
@@ -111,7 +112,7 @@ public class ParkingController {
     }
 
     @Operation(summary = "My Parking Spaces", description = "Returns current users listed parking spots")
-    @GetMapping(path = "/my", produces = "application/json")
+    @GetMapping(path = "/my", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<List<ParkingDataResponse>>> getMyParkingSpots(
             @AuthenticationPrincipal CustomUserDetails user,
             @RequestParam(defaultValue = "0", required = false) int page,
@@ -126,7 +127,7 @@ public class ParkingController {
     }
 
     @Operation(summary = "Cancel Booking", description = "Returns true after successful cancellation")
-    @PostMapping(path = "/cancel", produces = "application/json")
+    @PostMapping(path = "/cancel", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<Void>> cancelBooking(
             @AuthenticationPrincipal CustomUserDetails user,
             @RequestParam UUID parkingId
