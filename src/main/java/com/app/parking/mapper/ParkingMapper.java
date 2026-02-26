@@ -24,6 +24,6 @@ public interface ParkingMapper {
 
     ParkingDataResponse toParkingDataResponse(ParkingData parkingData);
 
-    @Mapping(target = "disable", source = "disabled")
+    @Mapping(target = "disabled", source = "disabled")
     ParkingUpdateResponse toUpdateResponse(ParkingData parkingData);
 }

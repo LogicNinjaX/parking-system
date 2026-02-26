@@ -13,6 +13,6 @@ public interface BookingHistoryMapper {
     @Mapping(target = "pincode", source = "bookingHistory.parkingData.pincode")
     @Mapping(target = "parkingId", source = "bookingHistory.parkingData.parkingId")
     @Mapping(target = "city", source = "bookingHistory.parkingData.city")
-    @Mapping(target = "address_line", source = "bookingHistory.parkingData.address_line")
+    @Mapping(target = "addressLine", source = "bookingHistory.parkingData.addressLine")
     BookingHistoryDataResponse toHistoryResponse(BookingHistory bookingHistory);
 }
