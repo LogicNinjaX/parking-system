@@ -125,13 +125,14 @@ public class ParkingServiceImpl implements ParkingService {
         parking.setVehicleType(request.getVehicleType());
     }
 
+    @Transactional
     @Override
     public void deleteOwnersParking(UUID ownerId, UUID parkingId){
-        int updatedRows = parkingRepository.deleteOwnersParking(ownerId, parkingId);
-
-        if (updatedRows > 0){
-            LOGGER.info("Parking: [{}] deleted successfully", parkingId);
-        }
+        //int updatedRows = parkingRepository.deleteOwnersParking(ownerId, parkingId);
+        ParkingData parking = parkingRepository.getParkingByOwnerId(ownerId, parkingId)
+                .orElseThrow(() -> new ParkingNotFoundException("Parking not found"));
+        parking.setDisabled(true);
+        LOGGER.info("Parking: [{}] deleted successfully or marked for deletion", parkingId);
     }
 
     @Override
