@@ -1,5 +1,6 @@
 package com.app.parking.controller;
 
+import com.app.parking.controller.doc.ReviewApiDoc;
 import com.app.parking.dto.request.ReviewRequest;
 import com.app.parking.dto.response.ApiResponse;
 import com.app.parking.dto.response.ReviewDataResponse;
@@ -8,6 +9,7 @@ import com.app.parking.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,8 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
-@Tag(name = "Review Management", description = "Endpoints related to rating/review")
-public class ReviewController {
+public class ReviewController implements ReviewApiDoc {
 
     private final ReviewService reviewService;
 
@@ -28,8 +29,8 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @Operation(summary = "Create Review", description = "Saves user review for attached parking id")
     @PostMapping(path = "/{parking-id}", consumes = APPLICATION_JSON_VALUE)
+    @Override
     public ResponseEntity<Void> createReview(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable("parking-id") UUID parkingId,
@@ -37,18 +38,17 @@ public class ReviewController {
     )
     {
         reviewService.review(userDetails.getUserId(), parkingId, request);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "Get Reviews", description = "Returns pages of reviews of attached parking id")
     @GetMapping(path = "/{parking-id}", produces = APPLICATION_JSON_VALUE)
+    @Override
     public ResponseEntity<ApiResponse<List<ReviewDataResponse>>> getAllReviewsByParking(
             @PathVariable("parking-id") UUID parkingId,
-            @RequestParam(defaultValue = "0", required = false) int page,
-            @RequestParam(defaultValue = "10", required = false) int size
+            Pageable pageable
     )
     {
-        var reviewList = reviewService.getAllReviews(parkingId, page, size);
+        var reviewList = reviewService.getAllReviews(parkingId, pageable);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ApiResponse<>(true, "reviews fetched successfully", reviewList));
     }
