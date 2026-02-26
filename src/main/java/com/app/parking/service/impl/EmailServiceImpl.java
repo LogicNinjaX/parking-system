@@ -102,7 +102,7 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("state", parkingData.getState());
         context.setVariable("city", parkingData.getCity());
         context.setVariable("pinCode", parkingData.getPincode());
-        context.setVariable("addressLine", parkingData.getAddress_line());
+        context.setVariable("addressLine", parkingData.getAddressLine());
         context.setVariable("vehicleType", parkingData.getVehicleType());
         context.setVariable("listingDate", parkingData.getCreatedAt());
 
@@ -138,7 +138,7 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("state", parkingData.getState());
         context.setVariable("city", parkingData.getCity());
         context.setVariable("pinCode", parkingData.getPincode());
-        context.setVariable("addressLine", parkingData.getAddress_line());
+        context.setVariable("addressLine", parkingData.getAddressLine());
         context.setVariable("locationUrl", parkingData.getLocationUrl());
         context.setVariable("vehicleType", parkingData.getVehicleType());
 

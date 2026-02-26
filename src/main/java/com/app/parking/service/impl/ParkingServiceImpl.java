@@ -118,8 +118,8 @@ public class ParkingServiceImpl implements ParkingService {
             parking.setPincode(request.getPincode());
         }
 
-        if (parking.getAddress_line() != null && !parking.getAddress_line().equals(request.getAddress_line())){
-            parking.setAddress_line(request.getAddress_line());
+        if (parking.getAddressLine() != null && !parking.getAddressLine().equals(request.getAddressLine())){
+            parking.setAddressLine(request.getAddressLine());
         }
 
         parking.setVehicleType(request.getVehicleType());

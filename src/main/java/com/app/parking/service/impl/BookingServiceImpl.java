@@ -88,7 +88,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private void validateBooking(UUID parkingId, ParkingData parkingData){
-        if (parkingData.isBooked()){
+        if (parkingData.getBooked()){
             LOGGER.warn("Parking spot: [{}] is already booked", parkingId);
             throw new ParkingAlreadyBookedException("Parking already booked");
         }
