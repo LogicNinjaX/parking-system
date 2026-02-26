@@ -28,9 +28,7 @@ public class BookingHistoryServiceImpl implements BookingHistoryService {
     }
 
     @Override
-    public List<BookingHistoryDataResponse> getBookingHistory(UUID userId, int page, int size){
-        Pageable pageable = PageRequest.of(page, size);
-
+    public List<BookingHistoryDataResponse> getBookingHistory(UUID userId, Pageable pageable){
         return historyRepository.getBookingHistory(userId, pageable)
                 .get()
                 .map(historyMapper::toHistoryResponse)
