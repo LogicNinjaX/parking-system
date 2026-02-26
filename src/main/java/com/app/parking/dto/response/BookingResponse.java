@@ -1,19 +1,62 @@
 package com.app.parking.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@Schema(
+        name = "BookingResponse",
+        description = "Represents booking confirmation details after a successful parking booking",
+        example = """
+                {
+                  "totalBill": 2500,
+                  "duration": 5,
+                  "bookedAt": "2026-02-25T10:30:00",
+                  "bookingEndDate": "2026-02-25",
+                  "bookingEndTime": "15:30:00"
+                }
+                """
+)
 public class BookingResponse {
 
-    private long totalBill;
+    @Schema(
+            description = "Total bill amount calculated for the booking",
+            example = "2500",
+            minimum = "0"
+    )
+    private Long totalBill;
 
-    private int duration;
+    @Schema(
+            description = "Booking duration in hours",
+            example = "5",
+            minimum = "1"
+    )
+    private Integer duration;
 
+    @Schema(
+            description = "Date and time when the booking was created",
+            type = "string",
+            format = "date-time",
+            example = "2026-02-25T10:30:00"
+    )
     private LocalDateTime bookedAt;
 
+    @Schema(
+            description = "Date when the booking will end",
+            type = "string",
+            format = "date",
+            example = "2026-02-25"
+    )
     private LocalDate bookingEndDate;
 
+    @Schema(
+            description = "Time when the booking will end",
+            type = "string",
+            format = "time",
+            example = "15:30:00"
+    )
     private LocalTime bookingEndTime;
 
     public BookingResponse(Builder builder){
@@ -24,19 +67,19 @@ public class BookingResponse {
         this.bookingEndTime = builder.bookingEndTime;
     }
 
-    public long getTotalBill() {
+    public Long getTotalBill() {
         return totalBill;
     }
 
-    public void setTotalBill(long totalBill) {
+    public void setTotalBill(Long totalBill) {
         this.totalBill = totalBill;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 

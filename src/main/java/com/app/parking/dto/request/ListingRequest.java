@@ -1,40 +1,88 @@
 package com.app.parking.dto.request;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.Set;
 
-@Schema(description = "Listing request schema")
+@Schema(
+        name = "ListingRequest",
+        description = "Request object used to create a parking listing",
+        example = """
+                {
+                  "state": "Uttar Pradesh",
+                  "city": "Lucknow",
+                  "pincode": 201102,
+                  "addressLine": "House no - xyz, colony, landmark",
+                  "locationUrl": "https://maps.google.com/?q=xyz",
+                  "price": 500,
+                  "vehicleType": ["CAR", "BIKE"]
+                }
+                """
+)
 public class ListingRequest {
 
-    @Schema(description = "State", example = "Uttar Pradesh")
+    @Schema(
+            description = "State where parking is located",
+            example = "Uttar Pradesh",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     @NotBlank(message = "{parking.list.state.not-blank}")
     private String state;
 
-    @Schema(description = "Parking city", example = "Lucknow")
+    @Schema(
+            description = "City where parking is located",
+            example = "Lucknow",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     @NotBlank(message = "{parking.list.city.not-blank}")
     private String city;
 
-    @Schema(description = "Parking pincode", example = "201102")
+    @Schema(
+            description = "Postal code of the parking location",
+            example = "201102",
+            minimum = "1",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     @Positive(message = "{parking.list.pincode.positive}")
     private int pincode;
 
-    @Schema(description = "Address line", example = "House no - xyz, colony, landmark")
+    @Schema(
+            description = "Full address of the parking location",
+            example = "House no - xyz, colony, landmark",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     @NotBlank(message = "{parking.list.address_line.not-blank}")
-    private String address_line;
+    private String addressLine;
 
-    @Schema(description = "Parking location url (google maps, apple maps...)", example = "https://maps.google.com/?q=ankurvihar")
+    @Schema(
+            description = "Google Maps / Apple Maps location URL",
+            example = "https://maps.google.com/?q=ankurvihar"
+    )
+    @Pattern(
+            regexp = "^(http|https)://.*$",
+            message = "Location URL must be a valid URL"
+    )
     private String locationUrl;
 
-    @Schema(description = "Parking price", example = "500")
+    @Schema(
+            description = "Parking price per hour",
+            example = "500",
+            minimum = "1",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     @Positive(message = "{parking.list.price.positive}")
     private long price;  // per hours
 
-    @Schema(description = "Vehicle types", example = "['Bus', 'Car', 'Bike']")
+    @ArraySchema(
+            schema = @Schema(
+                    description = "Supported vehicle type",
+                    example = "CAR"
+            ),
+            minItems = 1,
+            maxItems = 10
+    )
     @NotEmpty(message = "{parking.list.vehicle-type.not-empty}")
     @Size(min = 1, max = 10, message = "{parking.list.vehicle-type.size}")
     private Set<@NotBlank(message = "{parking.list.vehicle-type}") String> vehicleType;
@@ -63,12 +111,12 @@ public class ListingRequest {
         this.pincode = pincode;
     }
 
-    public String getAddress_line() {
-        return address_line;
+    public String getAddressLine() {
+        return addressLine;
     }
 
-    public void setAddress_line(String address_line) {
-        this.address_line = address_line;
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
     }
 
     public String getLocationUrl() {

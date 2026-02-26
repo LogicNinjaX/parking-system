@@ -1,43 +1,96 @@
 package com.app.parking.dto.request;
 
 
+import com.app.parking.enums.VehicleType;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 
 import java.util.Set;
 
-@Schema(description = "Parking update request")
+@Schema(
+        name = "ParkingUpdateRequest",
+        description = "Request object used to update an existing parking listing. Only provided fields will be updated.",
+        example = """
+                {
+                  "disabled": true,
+                  "locationUrl": "https://maps.google.com/?q=ankurvihar",
+                  "price": 600,
+                  "state": "Uttar Pradesh",
+                  "city": "Lucknow",
+                  "pincode": 201102,
+                  "addressLine": "New address, landmark",
+                  "vehicleType": ["CAR", "BIKE"]
+                }
+                """
+)
 public class ParkingUpdateRequest {
 
-    @Schema(description = "Parking status value true for enable and false for disable", example = "false")
-    private boolean disable;
+    @Schema(
+            description = "Set to true to disabled parking, false to enable",
+            example = "true"
+    )
+    private boolean disabled;
 
-    @Schema(description = "Parking location url (google maps, apple maps...)", example = "https://maps.google.com/?q=ankurvihar")
+    @Schema(
+            description = "Google Maps / Apple Maps location URL",
+            example = "https://maps.google.com/?q=xyz"
+    )
+    @Pattern(
+            regexp = "^(http|https)://.*$",
+            message = "Location URL must be a valid URL"
+    )
     private String locationUrl;
 
-    @Schema(description = "Parking price", example = "500")
+    @Schema(
+            description = "Updated parking price per hour",
+            example = "600",
+            minimum = "1"
+    )
+    @Positive(message = "{parking.list.price.positive}")
     private long price;  // in hours
 
-    @Schema(description = "State", example = "Uttar Pradesh")
+    @Schema(
+            description = "Updated state of the parking location",
+            example = "Uttar Pradesh"
+    )
     private String state;
 
-    @Schema(description = "Parking city", example = "Lucknow")
+    @Schema(
+            description = "Updated city of the parking location",
+            example = "Lucknow"
+    )
     private String city;
 
-    @Schema(description = "Parking pincode", example = "201102")
+    @Schema(
+            description = "Updated postal code",
+            example = "201102",
+            minimum = "1"
+    )
+    @Positive(message = "{parking.list.pincode.positive}")
     private int pincode;
 
-    @Schema(description = "Address line", example = "House no - xyz, colony, landmark")
-    private String address_line;
+    @Schema(
+            description = "Updated address line",
+            example = "New address, landmark"
+    )
+    private String addressLine;
 
-    @Schema(description = "Vehicle types", example = "['Bus', 'Car', 'Bike']")
-    private Set<String> vehicleType;
+    @ArraySchema(
+            schema = @Schema(
+                    description = "Updated supported vehicle type",
+                    example = "CAR"
+            )
+    )
+    private Set<VehicleType> vehicleType;
 
     public boolean getDisable() {
-        return disable;
+        return disabled;
     }
 
-    public void setDisable(boolean disable) {
-        this.disable = disable;
+    public void setDisable(boolean disabled) {
+        this.disabled = disabled;
     }
 
     public String getLocationUrl() {
@@ -80,19 +133,19 @@ public class ParkingUpdateRequest {
         this.pincode = pincode;
     }
 
-    public String getAddress_line() {
-        return address_line;
+    public String getAddressLine() {
+        return addressLine;
     }
 
-    public void setAddress_line(String address_line) {
-        this.address_line = address_line;
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
     }
 
-    public Set<String> getVehicleType() {
+    public Set<VehicleType> getVehicleType() {
         return vehicleType;
     }
 
-    public void setVehicleType(Set<String> vehicleType) {
+    public void setVehicleType(Set<VehicleType> vehicleType) {
         this.vehicleType = vehicleType;
     }
 }

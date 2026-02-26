@@ -1,33 +1,114 @@
 package com.app.parking.dto.response;
 
+import com.app.parking.enums.VehicleType;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
+
+@Schema(
+        name = "ParkingUpdateResponse",
+        description = "Represents the updated state of a parking listing",
+        example = """
+                {
+                  "parkingId": "660e8400-e29b-41d4-a716-446655440111",
+                  "disabled": false,
+                  "booked": true,
+                  "locationUrl": "https://maps.google.com/?q=xyz",
+                  "price": 600,
+                  "state": "Uttar Pradesh",
+                  "city": "Lucknow",
+                  "pincode": 201102,
+                  "addressLine": "New address, landmark",
+                  "vehicleType": ["CAR", "BIKE"],
+                  "createdAt": "2026-02-25T10:30:00",
+                  "updatedAt": "2026-02-25T11:45:00"
+                }
+                """
+)
 public class ParkingUpdateResponse {
 
+    @Schema(
+            description = "Unique identifier of the parking listing",
+            example = "660e8400-e29b-41d4-a716-446655440111"
+    )
     private UUID parkingId;
 
-    private boolean disable;
+    @Schema(
+            description = "Indicates whether the parking listing is disabled",
+            example = "false"
+    )
+    private Boolean disabled;
 
-    private boolean isBooked;
+    @Schema(
+            description = "Indicates whether the parking is currently booked",
+            example = "true"
+    )
+    private Boolean booked;
 
+    @Schema(
+            description = "Google Maps / Apple Maps location URL",
+            example = "https://maps.google.com/?q=xyz"
+    )
     private String locationUrl;
 
-    private Long price;  // in hours
+    @Schema(
+            description = "Updated parking price per hour",
+            example = "600",
+            minimum = "0"
+    )
+    private Long price;
 
+    @Schema(
+            description = "State where the parking is located",
+            example = "Uttar Pradesh"
+    )
     private String state;
 
+    @Schema(
+            description = "City where the parking is located",
+            example = "Lucknow"
+    )
     private String city;
 
+    @Schema(
+            description = "Postal code of the parking location",
+            example = "201102"
+    )
     private int pincode;
 
-    private String address_line;
+    @Schema(
+            description = "Full address of the parking location",
+            example = "New address, landmark"
+    )
+    private String addressLine;
 
-    private Set<String> vehicleType;
+    @ArraySchema(
+            schema = @Schema(
+                    description = "Supported vehicle type",
+                    example = "CAR",
+                    implementation = VehicleType.class
+            )
+    )
+    private Set<VehicleType> vehicleType;
 
+    @Schema(
+            description = "Date and time when the listing was created",
+            type = "string",
+            format = "date-time",
+            example = "2026-02-25T10:30:00"
+    )
     private LocalDateTime createdAt;
 
+    @Schema(
+            description = "Date and time when the listing was last updated",
+            type = "string",
+            format = "date-time",
+            example = "2026-02-25T11:45:00"
+    )
     private LocalDateTime updatedAt;
 
     public UUID getParkingId() {
@@ -38,20 +119,24 @@ public class ParkingUpdateResponse {
         this.parkingId = parkingId;
     }
 
-    public boolean getDisable() {
-        return disable;
+    public Boolean getDisabled() {
+        return disabled;
     }
 
-    public void setDisable(boolean disable) {
-        this.disable = disable;
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
     }
 
-    public boolean isBooked() {
-        return isBooked;
+    public void setBooked(Boolean booked) {
+        this.booked = booked;
+    }
+
+    public boolean getBooked() {
+        return booked;
     }
 
     public void setBooked(boolean booked) {
-        isBooked = booked;
+        this.booked = booked;
     }
 
     public String getLocationUrl() {
@@ -94,19 +179,19 @@ public class ParkingUpdateResponse {
         this.pincode = pincode;
     }
 
-    public String getAddress_line() {
-        return address_line;
+    public String getAddressLine() {
+        return addressLine;
     }
 
-    public void setAddress_line(String address_line) {
-        this.address_line = address_line;
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
     }
 
-    public Set<String> getVehicleType() {
+    public Set<VehicleType> getVehicleType() {
         return vehicleType;
     }
 
-    public void setVehicleType(Set<String> vehicleType) {
+    public void setVehicleType(Set<VehicleType> vehicleType) {
         this.vehicleType = vehicleType;
     }
 

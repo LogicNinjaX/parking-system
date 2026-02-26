@@ -3,14 +3,31 @@ package com.app.parking.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
-@Schema(description = "Login request schema")
+@Schema(
+        name = "LoginRequest",
+        description = "Request object used to authenticate a user and generate a JWT token",
+        example = """
+                {
+                  "username": "nitish",
+                  "password": "string"
+                }
+                """
+)
 public class LoginRequest {
 
-    @Schema(description = "Username", example = "pritam")
+    @Schema(
+            description = "Registered username of the user",
+            example = "nitish",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     @NotBlank(message = "{user.username.not-blank}")
     private String username;
 
-    @Schema(description = "Login password", example = "pritam@123")
+    @Schema(
+            description = "User account password",
+            example = "string",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     @NotBlank(message = "{user.password.not-blank}")
     private String password;
 

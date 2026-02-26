@@ -5,24 +5,55 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
-@Schema(description = "Register request schema")
+@Schema(
+        name = "RegisterRequest",
+        description = "Request object used to register a new user account",
+        example = """
+                {
+                  "fullName": "Nitish Sahni",
+                  "username": "nitish",
+                  "password": "string",
+                  "email": "example@gmail.com"
+                }
+                """
+)
 public class RegisterRequest {
 
-    @Schema(description = "User's full name", example = "Prince sharma")
+    @Schema(
+            description = "Full name of the user",
+            example = "Nitish Sahni",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     @NotBlank(message = "{user.full-name.not-blank}")
     private String fullName;
 
-    @Schema(description = "Username", example = "prince01")
+    @Schema(
+            description = "Unique username (5-20 characters)",
+            example = "nitish",
+            minLength = 5,
+            maxLength = 20,
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     @NotBlank(message = "{user.username.not-blank}")
-    @Length(min = 5, max = 20, message = "Username must be between {min} and {max}")
+    @Length(min = 5, max = 20, message = "Username must be between {min} and {max} characters.")
     private String username;
 
-    @Schema(description = "User password", example = "Prince@123")
+    @Schema(
+            description = "Account password (8-20 characters)",
+            example = "string",
+            minLength = 8,
+            maxLength = 20,
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     @NotBlank(message = "{user.password.not-blank}")
-    @Length(min = 8, max = 20, message = "Password must be between {min} and {max}")
+    @Length(min = 8, max = 20, message = "Password must be between {min} and {max} characters.")
     private String password;
 
-    @Schema(description = "User email", example = "example@gmail.com")
+    @Schema(
+            description = "Valid email address of the user",
+            example = "example@gmail.com",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     @NotBlank(message = "{user.email.not-blank}")
     @Email(message = "{user.email.invalid}")
     private String email;
