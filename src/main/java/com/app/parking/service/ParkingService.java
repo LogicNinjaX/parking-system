@@ -26,5 +26,5 @@ public interface ParkingService {
 
     void updateParkingStatus(UUID ownerId, UUID parkingId, boolean disable);
 
-    List<ParkingDataResponse> getMyParkingSpots(UUID userId, int page, int size, String sort, String dir);
+    List<ParkingDataResponse> getMyParkingSpots(UUID userId, Pageable pageable);
 }

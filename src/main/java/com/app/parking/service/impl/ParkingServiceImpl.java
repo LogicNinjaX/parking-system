@@ -145,14 +145,7 @@ public class ParkingServiceImpl implements ParkingService {
 
 
     @Override
-    public List<ParkingDataResponse> getMyParkingSpots(UUID userId, int page, int size, String sort, String dir){
-        Sort sorting = Sort.by(Sort.Direction.ASC, sort);
-
-        if (dir.equalsIgnoreCase("desc")){
-            sorting = Sort.by(Sort.Direction.DESC, sort);
-        }
-
-        Pageable pageable = PageRequest.of(page, size, sorting);
+    public List<ParkingDataResponse> getMyParkingSpots(UUID userId, Pageable pageable){
 
         return  parkingRepository.getAllUsersParking(userId, pageable)
                 .get()

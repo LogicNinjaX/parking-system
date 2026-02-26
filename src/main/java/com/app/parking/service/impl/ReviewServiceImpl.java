@@ -76,8 +76,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ReviewDataResponse> getAllReviews(UUID parkingId, int page, int size){
-        Pageable pageable = PageRequest.of(page, size);
+    public List<ReviewDataResponse> getAllReviews(UUID parkingId, Pageable pageable){
         return reviewRepository.findReviewsByParkingId(parkingId, pageable)
                 .get()
                 .map(reviewMapper::toReviewDataResponse)
