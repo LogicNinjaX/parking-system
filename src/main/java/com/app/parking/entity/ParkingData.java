@@ -1,5 +1,6 @@
 package com.app.parking.entity;
 
+import com.app.parking.enums.VehicleType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -22,14 +23,14 @@ public class ParkingData {
     @JoinColumn(name = "owner_id", referencedColumnName = "userId", nullable = false)
     private User owner;
 
-    private boolean isDisabled = false;
+    private Boolean isDisabled = false;
 
-    private boolean isBooked = false;
+    private Boolean isBooked = false;
 
     private String locationUrl;
 
     @Column(nullable = false)
-    private long price;  // in hours
+    private Long price;  // in hours
 
     @Column(nullable = false)
     private String state;
@@ -38,12 +39,12 @@ public class ParkingData {
     private String city;
 
     @Column(nullable = false)
-    private int pincode;
+    private Integer pincode;
 
     @Column(nullable = false)
-    private String address_line;
+    private String addressLine;
 
-    private Set<String> vehicleType;
+    private Set<VehicleType> vehicleType;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -76,7 +77,7 @@ public class ParkingData {
         isDisabled = disabled;
     }
 
-    public Boolean isBooked() {
+    public Boolean getBooked() {
         return isBooked;
     }
 
@@ -92,11 +93,11 @@ public class ParkingData {
         this.locationUrl = locationUrl;
     }
 
-    public long getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
@@ -124,19 +125,19 @@ public class ParkingData {
         this.pincode = pincode;
     }
 
-    public String getAddress_line() {
-        return address_line;
+    public String getAddressLine() {
+        return addressLine;
     }
 
-    public void setAddress_line(String address_line) {
-        this.address_line = address_line;
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
     }
 
-    public Set<String> getVehicleType() {
+    public Set<VehicleType> getVehicleType() {
         return vehicleType;
     }
 
-    public void setVehicleType(Set<String> vehicleType) {
+    public void setVehicleType(Set<VehicleType> vehicleType) {
         this.vehicleType = vehicleType;
     }
 

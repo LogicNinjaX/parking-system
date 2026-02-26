@@ -20,7 +20,7 @@ public class BookingHistory {
     @JoinColumn(name = "parking_id", referencedColumnName = "parkingId", nullable = false)
     private ParkingData parkingData;
 
-    private long totalBill;
+    private Long totalBill;
 
     private LocalDateTime bookedAt;
 
@@ -29,7 +29,7 @@ public class BookingHistory {
     public BookingHistory() {
     }
 
-    public BookingHistory(User user, ParkingData parkingData, long totalBill, LocalDateTime bookedAt, LocalDateTime endAt) {
+    public BookingHistory(User user, ParkingData parkingData, Long totalBill, LocalDateTime bookedAt, LocalDateTime endAt) {
         this.user = user;
         this.parkingData = parkingData;
         this.totalBill = totalBill;
@@ -61,11 +61,11 @@ public class BookingHistory {
         this.parkingData = parkingData;
     }
 
-    public long getTotalBill() {
+    public Long getTotalBill() {
         return totalBill;
     }
 
-    public void setTotalBill(long totalBill) {
+    public void setTotalBill(Long totalBill) {
         this.totalBill = totalBill;
     }
 

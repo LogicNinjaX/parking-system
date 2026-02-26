@@ -23,7 +23,7 @@ public class ParkingReview {
     private ParkingData parking;
 
     @Column(nullable = false)
-    private int rating;
+    private Integer rating;
 
     private String comment;
 
@@ -55,11 +55,11 @@ public class ParkingReview {
         this.parking = parking;
     }
 
-    public int getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 
