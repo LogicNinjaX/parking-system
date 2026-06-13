@@ -203,6 +203,7 @@ spring:
   mail:
     host: ${SMTP_HOST}
     port: ${SMTP_PORT}
+    from: ${MAIL_FROM}
     username: ${SMTP_UNAME}
     password: ${SMTP_PASS}
     properties:
