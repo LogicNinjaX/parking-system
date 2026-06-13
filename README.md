@@ -216,6 +216,8 @@ spring:
 jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXP} # in milliseconds
+cors:
+  allowed-origins: ${ALLOWED_ORIGINS} # cors origins (,) separated
 ```
 
 ---
