@@ -9,6 +9,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -32,6 +33,9 @@ public class EmailServiceImpl implements EmailService {
         this.templateEngine = templateEngine;
     }
 
+    @Value("${spring.mail.from}")
+    private String fromEmail;
+
 
     @Async
     @Override
@@ -44,6 +48,7 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            mimeMessageHelper.setFrom(fromEmail);
             mimeMessageHelper.setTo(wallet.getUser().getEmail());
             mimeMessageHelper.setSubject("Recharge Confirmation");
             mimeMessageHelper.setText(htmlContent, true);
@@ -82,6 +87,7 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            mimeMessageHelper.setFrom(fromEmail);
             mimeMessageHelper.setTo(parkingData.getOwner().getEmail());
             mimeMessageHelper.setSubject("Listing Confirmation");
             mimeMessageHelper.setText(htmlContent, true);
@@ -119,6 +125,7 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            mimeMessageHelper.setFrom(fromEmail);
             mimeMessageHelper.setTo(user.getEmail());
             mimeMessageHelper.setSubject("Booking Confirmation");
             mimeMessageHelper.setText(htmlContent, true);
