@@ -77,12 +77,7 @@ public class ParkingUpdateRequest {
     )
     private String addressLine;
 
-    @ArraySchema(
-            schema = @Schema(
-                    description = "Updated supported vehicle type",
-                    example = "CAR"
-            )
-    )
+    @Schema(description = "Updated supported vehicle type")
     private Set<VehicleType> vehicleType;
 
     public boolean getDisable() {
