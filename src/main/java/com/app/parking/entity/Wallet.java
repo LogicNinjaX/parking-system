@@ -15,7 +15,7 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID walletId;
 
-    private Double balance;
+    private double balance;
 
     @OneToOne(mappedBy = "wallet")
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
@@ -37,11 +37,11 @@ public class Wallet {
         this.walletId = walletId;
     }
 
-    public Double getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
