@@ -178,7 +178,7 @@ public class ParkingDataResponse {
         return addressLine;
     }
 
-    public void setAddressLine(String address_line) {
+    public void setAddressLine(String addressLine) {
         this.addressLine = addressLine;
     }
 

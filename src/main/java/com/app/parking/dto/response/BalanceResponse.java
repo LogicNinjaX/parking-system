@@ -21,7 +21,7 @@ public class BalanceResponse {
             example = "1500.75",
             minimum = "0"
     )
-    private Double balance;
+    private double balance;
 
     @Schema(
             description = "Date and time when the balance was last updated",
@@ -31,11 +31,11 @@ public class BalanceResponse {
     )
     private LocalDateTime updatedAt;
 
-    public Double getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
