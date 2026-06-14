@@ -29,6 +29,17 @@ This project is built using **clean architecture** and production-ready patterns
 
 ---
 
+## 🚀 Live Demo
+
+| Service | Link |
+|----------|------|
+| Swagger UI | https://parking-api-d20z.onrender.com/swagger-ui/index.html |
+| OpenAPI JSON | https://parking-api-d20z.onrender.com/v3/api-docs |
+
+> ⚠️ Render free instances may take 30–60 seconds to wake up after inactivity.
+
+---
+
 ## ✨ Features
 
 🔹 **Authentication & Authorization** — Secure JWT login and role-based access
