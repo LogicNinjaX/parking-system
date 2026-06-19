@@ -262,7 +262,7 @@ cors:
 ### Steps
 
 ```bash
-git clone https://github.com/LogicNinjaX/spot-share.git
+git clone https://github.com/LogicNinjaX/parking-system.git
 cd spot-share
 mvn spring-boot:run
 ```
