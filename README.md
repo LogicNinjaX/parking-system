@@ -33,8 +33,8 @@ This project is built using **clean architecture** and production-ready patterns
 
 | Service | Link |
 |----------|------|
-| Swagger UI | https://parking-api-d20z.onrender.com/swagger-ui/index.html |
-| OpenAPI JSON | https://parking-api-d20z.onrender.com/v3/api-docs |
+| Swagger UI | https://parking-api-spkc.onrender.com/swagger-ui/index.html |
+| OpenAPI JSON | https://parking-api-spkc.onrender.com/v3/api-docs |
 
 > ⚠️ Render free instances may take 30–60 seconds to wake up after inactivity.
 
