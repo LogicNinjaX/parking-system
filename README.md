@@ -263,7 +263,7 @@ cors:
 
 ```bash
 git clone https://github.com/LogicNinjaX/parking-system.git
-cd spot-share
+cd parking-system
 mvn spring-boot:run
 ```
 
